@@ -1,0 +1,1505 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>DJ ML ORIGINAL 1.0 — Pack de Produção para DJs</title>
+<meta name="description" content="Pack DJ ML ORIGINAL 1.0: sons, loops e material exclusivo para DJs e produtores elevarem suas produções.">
+
+<!-- Open Graph -->
+<meta property="og:title" content="DJ ML ORIGINAL 1.0 — Pack de Produção para DJs">
+<meta property="og:description" content="Pack DJ ML ORIGINAL 1.0: sons, loops e material exclusivo para DJs e produtores elevarem suas produções.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="assets/og-image.jpg"><!-- SUBSTITUA pela imagem de compartilhamento -->
+<meta property="og:locale" content="pt_BR">
+<meta name="theme-color" content="#050505">
+
+<!-- Favicon (inline SVG - disco/vinil) -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='48' fill='%23050505' stroke='%23FF0000' stroke-width='4'/%3E%3Ccircle cx='50' cy='50' r='14' fill='%23FF0000'/%3E%3Ccircle cx='50' cy='50' r='5' fill='%23050505'/%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:wght@400;500;600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+/* =========================================================
+   DJ ML ORIGINAL 1.0 — STYLE
+   Tokens, base, layout, componentes e responsividade.
+   ========================================================= */
+
+:root{
+  --bg:#050505;
+  --bg-alt:#0a0a0a;
+  --bg-card:#111111;
+  --red:#FF0000;
+  --red-dark:#8B0000;
+  --white:#FFFFFF;
+  --gray:#1a1a1a;
+  --gray-line:#262626;
+  --text-dim:#9a9a9a;
+  --text-dimmer:#6b6b6b;
+
+  --font-display:'Bebas Neue', sans-serif;
+  --font-body:'Manrope', sans-serif;
+  --font-mono:'JetBrains Mono', monospace;
+
+  --glow-red: 0 0 40px rgba(255,0,0,.45);
+  --glow-red-soft: 0 0 20px rgba(255,0,0,.25);
+
+  --ease: cubic-bezier(.16,.84,.44,1);
+}
+
+*{ box-sizing:border-box; }
+html{ scroll-behavior:smooth; }
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--white);
+  font-family:var(--font-body);
+  overflow-x:hidden;
+  cursor:none;
+}
+img{ max-width:100%; display:block; }
+a{ color:inherit; text-decoration:none; }
+button{ font-family:inherit; cursor:none; border:none; background:none; color:inherit; }
+h1,h2,h3,h4{ font-family:var(--font-display); letter-spacing:.02em; margin:0; }
+p{ margin:0; }
+ul{ margin:0; padding:0; list-style:none; }
+
+::selection{ background:var(--red); color:var(--white); }
+
+@media (hover:none){
+  body, button, a{ cursor:auto; }
+  .cursor-dot, .cursor-ring{ display:none; }
+}
+
+/* =============== LOADER =============== */
+#loader{
+  position:fixed; inset:0; z-index:9999;
+  background:var(--bg);
+  display:flex; align-items:center; justify-content:center;
+  transition:opacity .6s var(--ease), visibility .6s var(--ease);
+}
+#loader.loaded{ opacity:0; visibility:hidden; pointer-events:none; }
+.loader-inner{ text-align:center; }
+.loader-logo{
+  font-family:var(--font-display);
+  font-size:clamp(2rem,6vw,3.5rem);
+  letter-spacing:.08em;
+  margin-bottom:1.5rem;
+}
+.loader-logo span{ color:var(--red); }
+.loader-eq{
+  display:flex; align-items:flex-end; justify-content:center;
+  gap:6px; height:40px; margin:0 auto 1rem;
+}
+.loader-eq span{
+  width:5px; background:var(--red); border-radius:2px;
+  animation:eqBounce 1s ease-in-out infinite;
+  box-shadow:0 0 8px rgba(255,0,0,.6);
+}
+.loader-eq span:nth-child(1){ animation-delay:.0s; }
+.loader-eq span:nth-child(2){ animation-delay:.1s; }
+.loader-eq span:nth-child(3){ animation-delay:.2s; }
+.loader-eq span:nth-child(4){ animation-delay:.3s; }
+.loader-eq span:nth-child(5){ animation-delay:.15s; }
+.loader-eq span:nth-child(6){ animation-delay:.25s; }
+.loader-eq span:nth-child(7){ animation-delay:.05s; }
+@keyframes eqBounce{
+  0%,100%{ height:8px; }
+  50%{ height:38px; }
+}
+.loader-pct{ font-family:var(--font-mono); color:var(--text-dim); font-size:.8rem; letter-spacing:.1em; }
+
+/* =============== CURSOR =============== */
+.cursor-dot, .cursor-ring{
+  position:fixed; top:0; left:0; z-index:9998;
+  pointer-events:none; border-radius:50%;
+  transform:translate(-50%,-50%);
+  will-change:transform;
+}
+.cursor-dot{
+  width:6px; height:6px; background:var(--red);
+  box-shadow:0 0 10px rgba(255,0,0,.8);
+}
+.cursor-ring{
+  width:34px; height:34px; border:1px solid rgba(255,0,0,.5);
+  transition:width .25s var(--ease), height .25s var(--ease), border-color .25s var(--ease), background .25s var(--ease);
+}
+.cursor-ring.hovered{
+  width:60px; height:60px;
+  background:rgba(255,0,0,.08);
+  border-color:var(--red);
+}
+
+/* =============== BACKGROUND CANVAS / GRAIN =============== */
+#bgCanvas{
+  position:fixed; inset:0; z-index:0;
+  width:100%; height:100%;
+  pointer-events:none;
+}
+.grain-overlay{
+  position:fixed; inset:0; z-index:1; pointer-events:none;
+  opacity:.05; mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* =============== SIDE EQUALIZER (fixed) =============== */
+.side-eq{
+  position:fixed; right:14px; top:50%; transform:translateY(-50%);
+  z-index:40; display:flex; flex-direction:column; gap:4px;
+  opacity:.6;
+}
+.side-eq span{
+  width:3px; height:12px; background:var(--red);
+  border-radius:2px; box-shadow:0 0 6px rgba(255,0,0,.6);
+  animation:eqSide 1.4s ease-in-out infinite;
+}
+@keyframes eqSide{
+  0%,100%{ height:6px; opacity:.4; }
+  50%{ height:24px; opacity:1; }
+}
+@media (max-width:900px){ .side-eq{ display:none; } }
+
+/* =============== LAYOUT HELPERS =============== */
+main{ position:relative; z-index:2; }
+.section{ padding:min(14vw,140px) 24px; position:relative; }
+.section-alt{ background:linear-gradient(180deg, transparent, rgba(139,0,0,.06), transparent); }
+.section-inner{ max-width:1180px; margin:0 auto; }
+.eyebrow{
+  font-family:var(--font-mono); font-size:.78rem; letter-spacing:.18em;
+  color:var(--red); margin-bottom:1rem; text-transform:uppercase;
+}
+.section-title{
+  font-size:clamp(2.2rem,5.5vw,4rem); line-height:1.05;
+  margin-bottom:3rem; text-transform:uppercase;
+}
+.text-red{ color:var(--red); text-shadow:0 0 30px rgba(255,0,0,.4); }
+
+/* =============== SCROLL REVEAL =============== */
+.reveal-up{
+  opacity:0; transform:translateY(36px);
+  transition:opacity .8s var(--ease), transform .8s var(--ease);
+}
+.reveal-up.in-view{ opacity:1; transform:translateY(0); }
+@media (prefers-reduced-motion: reduce){
+  .reveal-up{ opacity:1; transform:none; transition:none; }
+}
+
+/* =============== NAVBAR =============== */
+.navbar{
+  position:fixed; top:0; left:0; right:0; z-index:100;
+  padding:20px 24px;
+  transition:padding .35s var(--ease), background .35s var(--ease), backdrop-filter .35s var(--ease), border-color .35s var(--ease);
+  border-bottom:1px solid transparent;
+}
+.navbar.scrolled{
+  padding:12px 24px;
+  background:rgba(5,5,5,.75);
+  backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--gray-line);
+}
+.nav-inner{
+  max-width:1280px; margin:0 auto;
+  display:flex; align-items:center; justify-content:space-between; gap:24px;
+}
+.nav-logo{
+  font-family:var(--font-display); font-size:1.4rem; letter-spacing:.06em;
+  display:flex; gap:.15em;
+}
+.nav-logo span{ color:var(--red); }
+.nav-logo em{ font-style:normal; color:var(--text-dim); font-size:.65em; align-self:center; margin-left:.3em; letter-spacing:.15em; }
+.nav-links{ display:flex; align-items:center; gap:32px; }
+.nav-link{
+  font-size:.9rem; font-weight:600; color:var(--text-dim);
+  position:relative; padding:4px 0; transition:color .25s;
+}
+.nav-link::after{
+  content:''; position:absolute; left:0; bottom:0; height:2px; width:0;
+  background:var(--red); transition:width .3s var(--ease);
+  box-shadow:0 0 8px rgba(255,0,0,.7);
+}
+.nav-link:hover{ color:var(--white); }
+.nav-link:hover::after{ width:100%; }
+.nav-cta{
+  font-family:var(--font-mono); font-size:.78rem; font-weight:600; letter-spacing:.06em;
+  padding:11px 22px; border:1px solid var(--red); border-radius:2px;
+  background:rgba(255,0,0,.08); white-space:nowrap;
+  transition:background .25s, box-shadow .25s, transform .2s;
+}
+.nav-cta:hover{ background:var(--red); box-shadow:var(--glow-red); }
+.nav-cta-mobile{ display:none; }
+.nav-burger{
+  display:none; flex-direction:column; gap:5px; width:28px; padding:6px 0;
+}
+.nav-burger span{ height:2px; width:100%; background:var(--white); transition:transform .3s var(--ease), opacity .3s var(--ease); }
+.nav-burger.open span:nth-child(1){ transform:translateY(7px) rotate(45deg); }
+.nav-burger.open span:nth-child(2){ opacity:0; }
+.nav-burger.open span:nth-child(3){ transform:translateY(-7px) rotate(-45deg); }
+
+@media (max-width:900px){
+  .nav-links{
+    position:fixed; top:0; right:0; height:100vh; width:min(78vw,320px);
+    background:rgba(6,6,6,.98); backdrop-filter:blur(20px);
+    flex-direction:column; justify-content:center; align-items:flex-start;
+    padding:32px; gap:26px;
+    transform:translateX(100%); transition:transform .4s var(--ease);
+    border-left:1px solid var(--gray-line);
+  }
+  .nav-links.open{ transform:translateX(0); }
+  .nav-cta{ display:none; }
+  .nav-cta-mobile{
+    display:block; margin-top:12px; font-family:var(--font-mono); font-size:.85rem;
+    padding:12px 20px; border:1px solid var(--red); background:var(--red);
+    border-radius:2px; letter-spacing:.06em;
+  }
+  .nav-burger{ display:flex; }
+}
+
+/* =============== BUTTONS =============== */
+.btn{
+  position:relative; display:inline-flex; align-items:center; justify-content:center;
+  padding:18px 38px; font-family:var(--font-mono); font-weight:600;
+  font-size:.9rem; letter-spacing:.08em; border-radius:3px;
+  overflow:hidden; isolation:isolate; white-space:nowrap;
+  transition:transform .25s var(--ease), box-shadow .35s var(--ease);
+}
+.btn-primary{
+  background:linear-gradient(135deg, var(--red), var(--red-dark));
+  color:var(--white); box-shadow:var(--glow-red-soft);
+}
+.btn-primary:hover{ transform:translateY(-3px) scale(1.03); box-shadow:var(--glow-red), 0 12px 30px rgba(255,0,0,.25); }
+.btn-secondary{
+  background:transparent; color:var(--white); border:1px solid var(--gray-line);
+}
+.btn-secondary:hover{ border-color:var(--red); background:rgba(255,0,0,.06); transform:translateY(-3px); }
+.btn-huge{ padding:24px 56px; font-size:1.05rem; }
+.btn-block{ width:100%; }
+.btn-shine{
+  position:absolute; top:0; left:-60%; width:40%; height:100%;
+  background:linear-gradient(115deg, transparent, rgba(255,255,255,.35), transparent);
+  transform:skewX(-20deg);
+  animation:shine 3.2s ease-in-out infinite;
+}
+@keyframes shine{
+  0%{ left:-60%; }
+  35%{ left:130%; }
+  100%{ left:130%; }
+}
+.btn-particles{ position:absolute; inset:-20px; pointer-events:none; z-index:-1; }
+.hero-actions{ display:flex; flex-wrap:wrap; gap:18px; justify-content:center; }
+
+@media (prefers-reduced-motion: reduce){
+  .btn-shine{ animation:none; display:none; }
+}
+
+/* =============== HERO =============== */
+.hero{
+  min-height:100svh; display:flex; flex-direction:column; align-items:center; justify-content:center;
+  position:relative; padding:140px 24px 100px; text-align:center;
+}
+.hero-bg-glow{
+  position:absolute; top:10%; left:50%; transform:translateX(-50%);
+  width:min(900px,100%); height:600px;
+  background:radial-gradient(circle, rgba(255,0,0,.16), transparent 65%);
+  filter:blur(40px); pointer-events:none; z-index:0;
+}
+.hero-content{ position:relative; z-index:2; max-width:900px; }
+.hero-title{
+  font-size:clamp(2.6rem, 8vw, 5.6rem); line-height:1.02;
+  text-transform:uppercase; margin-bottom:1.6rem;
+}
+.hero-title span{ display:block; }
+.hero-title-accent{ color:var(--red); text-shadow:0 0 40px rgba(255,0,0,.5); }
+.hero-subtitle{
+  font-size:clamp(1rem,2vw,1.25rem); color:var(--text-dim);
+  max-width:640px; margin:0 auto 2.6rem; line-height:1.6;
+}
+.hero-eq{ margin-top:56px; display:flex; justify-content:center; }
+.mini-eq{ display:flex; align-items:flex-end; gap:5px; height:34px; }
+.mini-eq span{
+  width:4px; background:linear-gradient(180deg, var(--red), var(--red-dark));
+  border-radius:2px; box-shadow:0 0 6px rgba(255,0,0,.5);
+}
+
+.scroll-indicator{
+  position:absolute; bottom:34px; left:50%; transform:translateX(-50%);
+  display:flex; flex-direction:column; align-items:center; gap:10px;
+  z-index:2;
+}
+.scroll-mouse{
+  width:24px; height:38px; border:2px solid var(--text-dimmer); border-radius:14px;
+  display:flex; justify-content:center; padding-top:6px;
+}
+.scroll-dot{ width:4px; height:4px; border-radius:50%; background:var(--red); animation:scrollDot 1.6s infinite; }
+@keyframes scrollDot{ 0%{ transform:translateY(0); opacity:1; } 70%{ transform:translateY(12px); opacity:0; } 100%{ opacity:0; } }
+.scroll-text{ font-family:var(--font-mono); font-size:.65rem; letter-spacing:.18em; color:var(--text-dimmer); }
+
+/* =============== CARDS: O QUE TEM NO PACK =============== */
+.cards-grid{
+  display:grid; grid-template-columns:repeat(3,1fr); gap:24px;
+}
+.learn-card{
+  position:relative; background:var(--bg-card); border:1px solid var(--gray-line);
+  border-radius:8px; padding:36px 28px; overflow:hidden;
+  transition:transform .1s linear, border-color .3s, box-shadow .3s;
+  transform-style:preserve-3d; will-change:transform;
+}
+.learn-card:hover{ border-color:rgba(255,0,0,.5); box-shadow:0 20px 50px rgba(255,0,0,.12); }
+.learn-card-glow{
+  position:absolute; width:220px; height:220px; border-radius:50%;
+  background:radial-gradient(circle, rgba(255,0,0,.25), transparent 70%);
+  top:-90px; right:-90px; opacity:0; transition:opacity .35s;
+  pointer-events:none;
+}
+.learn-card:hover .learn-card-glow{ opacity:1; }
+.learn-card-icon{ font-size:2.4rem; margin-bottom:1.1rem; filter:drop-shadow(0 0 12px rgba(255,0,0,.35)); }
+.learn-card h3{ font-size:1.5rem; letter-spacing:.04em; margin-bottom:.6rem; }
+.learn-card p{ color:var(--text-dim); font-size:.92rem; line-height:1.55; }
+
+@media (max-width:900px){ .cards-grid{ grid-template-columns:repeat(2,1fr); } }
+@media (max-width:600px){ .cards-grid{ grid-template-columns:1fr; } }
+
+/* =============== POR QUE ============= */
+.why-grid{ display:grid; grid-template-columns:1.1fr .9fr; gap:60px; align-items:center; }
+.why-list{ display:flex; flex-direction:column; gap:26px; }
+.why-item{ display:flex; gap:20px; align-items:flex-start; }
+.why-num{
+  font-family:var(--font-mono); color:var(--red); font-size:.85rem;
+  border:1px solid var(--gray-line); border-radius:4px; padding:4px 8px; flex-shrink:0;
+}
+.why-item h4{ font-family:var(--font-body); font-weight:700; font-size:1.05rem; margin-bottom:.3rem; }
+.why-item p{ color:var(--text-dim); font-size:.9rem; line-height:1.5; }
+
+.eq-panel{
+  background:var(--bg-card); border:1px solid var(--gray-line); border-radius:12px;
+  padding:32px; box-shadow:0 30px 60px rgba(0,0,0,.4);
+}
+.eq-panel-label{ font-family:var(--font-mono); font-size:.7rem; letter-spacing:.18em; color:var(--text-dimmer); margin-bottom:20px; }
+.eq-panel-bars{ display:flex; align-items:flex-end; gap:6px; height:180px; }
+.eq-panel-bars span{
+  flex:1; background:linear-gradient(180deg, var(--red), var(--red-dark));
+  border-radius:3px 3px 0 0; box-shadow:0 0 10px rgba(255,0,0,.35);
+}
+
+@media (max-width:900px){ .why-grid{ grid-template-columns:1fr; } }
+
+/* =============== MID CTA =============== */
+.mid-cta{
+  text-align:center; padding:100px 24px;
+  position:relative;
+}
+.mid-cta h2{ font-size:clamp(2rem,6vw,3.6rem); line-height:1.1; margin-bottom:2.2rem; text-transform:uppercase; }
+.mid-cta-alt p{ font-family:var(--font-mono); color:var(--text-dim); letter-spacing:.1em; margin-top:-1rem; }
+
+/* =============== SEÇÃO DO PACK =============== */
+.curso-grid{ display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center; }
+.curso-desc{ color:var(--text-dim); font-size:1.02rem; line-height:1.7; margin:1.4rem 0 2rem; max-width:480px; }
+.curso-features{ display:flex; flex-direction:column; gap:14px; margin-bottom:2.4rem; }
+.curso-features li{
+  display:flex; align-items:center; gap:12px; font-family:var(--font-mono);
+  font-size:.85rem; letter-spacing:.06em; color:var(--white);
+}
+.feat-icon{ font-size:1.1rem; }
+
+.curso-visual{ position:relative; height:420px; display:flex; align-items:center; justify-content:center; perspective:1200px; }
+.product-box{
+  width:220px; height:280px; position:relative; transform-style:preserve-3d;
+  animation:boxFloat 6s ease-in-out infinite;
+  will-change:transform;
+}
+@keyframes boxFloat{
+  0%,100%{ transform:rotateY(-18deg) rotateX(6deg) translateY(0); }
+  50%{ transform:rotateY(18deg) rotateX(-4deg) translateY(-18px); }
+}
+.product-box-face{
+  position:absolute; inset:0;
+  border:1px solid rgba(255,0,0,.4);
+  background:linear-gradient(145deg, #141414, #0a0a0a);
+  box-shadow:inset 0 0 40px rgba(255,0,0,.06);
+}
+.product-box-front{ transform:translateZ(50px); display:flex; align-items:center; justify-content:center; }
+.product-box-back{ transform:translateZ(-50px) rotateY(180deg); }
+.product-box-right{ width:100px; left:auto; right:-50px; transform:rotateY(90deg) translateZ(50px); }
+.product-box-left{ width:100px; transform:rotateY(-90deg) translateZ(50px); }
+.product-box-top{ height:100px; top:-50px; transform:rotateX(90deg) translateZ(50px); }
+.product-box-bottom{ height:100px; bottom:-50px; transform:rotateX(-90deg) translateZ(50px); }
+.product-box-logo{
+  font-family:var(--font-display); font-size:1.5rem; text-align:center; line-height:1.15;
+  text-shadow:0 0 20px rgba(255,0,0,.5);
+}
+.product-box-logo em{ font-style:normal; color:var(--red); }
+
+.floating-chip{
+  position:absolute; font-size:1.6rem; padding:14px; border-radius:50%;
+  background:rgba(17,17,17,.9); border:1px solid var(--gray-line);
+  box-shadow:0 0 20px rgba(255,0,0,.18);
+  animation:chipFloat 5s ease-in-out infinite;
+}
+.chip-1{ top:8%; left:6%; animation-delay:0s; }
+.chip-2{ top:70%; left:2%; animation-delay:1.2s; }
+.chip-3{ top:10%; right:4%; animation-delay:.6s; }
+.chip-4{ top:68%; right:0%; animation-delay:1.8s; }
+@keyframes chipFloat{
+  0%,100%{ transform:translateY(0); }
+  50%{ transform:translateY(-16px); }
+}
+
+@media (max-width:900px){
+  .curso-grid{ grid-template-columns:1fr; }
+  .curso-visual{ height:320px; order:-1; }
+}
+
+/* =============== OFERTA / PLANOS (3 TIERS) =============== */
+.offer-section{ text-align:center; position:relative; }
+.offer-glow{
+  position:absolute; top:0; left:50%; transform:translateX(-50%);
+  width:100%; max-width:1100px; height:100%;
+  background:radial-gradient(ellipse at center, rgba(255,0,0,.14), transparent 70%);
+  pointer-events:none;
+}
+.offer-inner{ position:relative; z-index:1; }
+.offer-sub{
+  font-family:var(--font-mono); color:var(--text-dim); font-size:.9rem;
+  letter-spacing:.04em; max-width:560px; margin:-1.6rem auto 3.2rem;
+  line-height:1.6;
+}
+
+.pricing-grid{
+  display:grid; grid-template-columns:repeat(3,1fr); gap:24px;
+  align-items:stretch; max-width:1100px; margin:0 auto;
+}
+
+.price-card{
+  position:relative; text-align:left; padding:40px 30px; border-radius:16px;
+  background:linear-gradient(160deg, #120404, #0a0a0a);
+  border:1px solid var(--gray-line);
+  box-shadow:0 20px 50px rgba(0,0,0,.35);
+  display:flex; flex-direction:column;
+  transition:transform .3s var(--ease), border-color .3s, box-shadow .3s;
+}
+.price-card:hover{ transform:translateY(-6px); }
+
+.price-card-basico{ border-color:var(--gray-line); }
+.price-card-intermediario{ border-color:rgba(255,0,0,.25); }
+
+.price-card-pro{
+  border:1px solid rgba(255,0,0,.6);
+  background:linear-gradient(160deg, #1a0505, #0a0a0a);
+  box-shadow:0 0 0 1px rgba(255,0,0,.15), 0 40px 90px rgba(139,0,0,.35);
+  transform:scale(1.045);
+  z-index:2;
+  animation:pricePulse 4.5s ease-in-out infinite;
+}
+.price-card-pro:hover{ transform:scale(1.045) translateY(-6px); }
+
+@keyframes pricePulse{
+  0%,100%{ box-shadow:0 0 0 1px rgba(255,0,0,.15), 0 40px 90px rgba(139,0,0,.28); }
+  50%{ box-shadow:0 0 0 1px rgba(255,0,0,.3), 0 40px 110px rgba(255,0,0,.42); }
+}
+@media (prefers-reduced-motion: reduce){ .price-card-pro{ animation:none; } }
+
+.price-badge{
+  position:absolute; top:-14px; left:50%; transform:translateX(-50%);
+  font-family:var(--font-mono); font-size:.7rem; font-weight:700; letter-spacing:.1em;
+  padding:7px 18px; border-radius:20px; white-space:nowrap;
+  background:linear-gradient(135deg, var(--red), var(--red-dark));
+  box-shadow:0 8px 20px rgba(255,0,0,.4);
+  text-transform:uppercase;
+}
+
+.price-tier-name{
+  font-family:var(--font-mono); font-size:.78rem; letter-spacing:.16em;
+  color:var(--text-dim); text-transform:uppercase; margin-bottom:.9rem;
+}
+.price-card-pro .price-tier-name{ color:var(--red); }
+
+.price-value-row{ display:flex; align-items:flex-end; gap:6px; margin-bottom:.4rem; }
+.price-value{
+  font-family:var(--font-display); font-size:clamp(2.4rem,5vw,3.2rem); line-height:1;
+}
+.price-currency{ font-size:.4em; vertical-align:top; color:var(--red); margin-right:2px; }
+.price-old{
+  font-family:var(--font-mono); font-size:.85rem; color:var(--text-dimmer);
+  text-decoration:line-through; margin-bottom:1.6rem;
+}
+.price-installment{
+  font-family:var(--font-mono); font-size:.78rem; color:var(--text-dim);
+  margin-bottom:1.8rem;
+}
+
+.price-features{ display:flex; flex-direction:column; gap:12px; margin-bottom:2.2rem; flex-grow:1; }
+.price-features li{
+  display:flex; align-items:flex-start; gap:10px;
+  font-size:.88rem; color:var(--text-dim); line-height:1.4;
+}
+.price-features li.feat-off{ color:var(--text-dimmer); opacity:.55; }
+.price-check{ color:var(--red); font-weight:700; flex-shrink:0; }
+.price-x{ color:var(--text-dimmer); flex-shrink:0; }
+
+.price-card .btn{ width:100%; }
+
+.trust-badges{
+  margin-top:2.6rem; display:flex; flex-wrap:wrap; justify-content:center; gap:18px;
+  font-family:var(--font-mono); font-size:.75rem; color:var(--text-dim); letter-spacing:.02em;
+}
+
+@media (max-width:900px){
+  .pricing-grid{ grid-template-columns:1fr; max-width:440px; }
+  .price-card-pro{ transform:none; order:-1; }
+  .price-card-pro:hover{ transform:translateY(-6px); }
+}
+
+/* =============== FAQ =============== */
+.faq-inner{ max-width:820px; }
+.accordion-item{
+  border-bottom:1px solid var(--gray-line);
+}
+.accordion-header{
+  width:100%; display:flex; align-items:center; justify-content:space-between;
+  padding:24px 4px; text-align:left; font-size:1.05rem; font-weight:700;
+}
+.accordion-icon{
+  font-family:var(--font-mono); color:var(--red); font-size:1.3rem; flex-shrink:0; margin-left:16px;
+  transition:transform .35s var(--ease);
+}
+.accordion-item.open .accordion-icon{ transform:rotate(45deg); }
+.accordion-body{
+  max-height:0; overflow:hidden; transition:max-height .4s var(--ease), padding .4s var(--ease);
+  padding:0 4px;
+}
+.accordion-item.open .accordion-body{ max-height:260px; padding-bottom:22px; }
+.accordion-body p{ color:var(--text-dim); font-size:.94rem; line-height:1.65; }
+
+/* =============== FOOTER =============== */
+.footer{ position:relative; z-index:2; padding:60px 24px 30px; border-top:1px solid var(--gray-line); }
+.footer-inner{
+  max-width:1180px; margin:0 auto 30px; display:flex; flex-wrap:wrap;
+  justify-content:space-between; align-items:center; gap:24px;
+}
+.footer-logo{ font-family:var(--font-display); font-size:1.3rem; letter-spacing:.06em; }
+.footer-logo span{ color:var(--red); }
+.footer-tagline{ color:var(--text-dimmer); font-size:.85rem; margin-top:4px; }
+.footer-links{ display:flex; gap:26px; flex-wrap:wrap; }
+.footer-links a{ font-size:.85rem; color:var(--text-dim); transition:color .2s; }
+.footer-links a:hover{ color:var(--red); }
+.footer-copy{
+  max-width:1180px; margin:0 auto; text-align:center;
+  font-family:var(--font-mono); font-size:.72rem; color:var(--text-dimmer); letter-spacing:.04em;
+}
+
+/* =============== RESPONSIVE TWEAKS =============== */
+@media (max-width:600px){
+  .section{ padding:90px 20px; }
+  .hero{ padding-top:120px; }
+  .btn-huge{ padding:20px 36px; width:100%; }
+  .price-card{ padding:32px 22px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ============ LOADING SCREEN ============ -->
+<div id="loader" aria-hidden="true">
+  <div class="loader-inner">
+    <div class="loader-logo">DJ<span>ML</span>ORIGINAL 1.0</div>
+    <div class="loader-eq">
+      <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+    </div>
+    <div class="loader-pct"><span id="loaderPct">0</span>%</div>
+  </div>
+</div>
+
+<!-- ============ CUSTOM CURSOR ============ -->
+<div class="cursor-dot" id="cursorDot" aria-hidden="true"></div>
+<div class="cursor-ring" id="cursorRing" aria-hidden="true"></div>
+
+<!-- ============ 3D BACKGROUND CANVAS ============ -->
+<canvas id="bgCanvas" aria-hidden="true"></canvas>
+
+<!-- ============ GRAIN / NOISE OVERLAY ============ -->
+<div class="grain-overlay" aria-hidden="true"></div>
+
+<!-- ============ FIXED SIDE EQUALIZER ============ -->
+<div class="side-eq" id="sideEq" aria-hidden="true"></div>
+
+<!-- ============ NAVBAR ============ -->
+<header class="navbar" id="navbar">
+  <div class="nav-inner">
+    <a href="#home" class="nav-logo">DJ<span>ML</span><em>ORIGINAL 1.0</em></a>
+
+    <nav class="nav-links" id="navLinks">
+      <a href="#home" class="nav-link" data-close>Início</a>
+      <a href="#pack" class="nav-link" data-close>Pack</a>
+      <a href="#conteudo" class="nav-link" data-close>Conteúdo</a>
+      <a href="#oferta" class="nav-link" data-close>Planos</a>
+      <a href="#faq" class="nav-link" data-close>FAQ</a>
+      <a href="#oferta" class="nav-cta-mobile" data-close>Quero o Pack</a>
+    </nav>
+
+    <a href="#oferta" class="nav-cta btn-magnetic">
+      <span>QUERO O PACK</span>
+    </a>
+
+    <button class="nav-burger" id="navBurger" aria-label="Abrir menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main>
+
+  <!-- ============ HERO ============ -->
+  <section class="hero" id="home">
+    <div class="hero-bg-glow" aria-hidden="true"></div>
+
+    <div class="hero-content">
+      <p class="eyebrow reveal-up" data-delay="0">// PACK DE PRODUÇÃO — DJ &amp; MÚSICA ELETRÔNICA</p>
+
+      <h1 class="hero-title">
+        <span class="reveal-up" data-delay="1">ELEVE SUAS PRODUÇÕES</span>
+        <span class="reveal-up hero-title-accent" data-delay="2">COM O PACK</span>
+        <span class="reveal-up hero-title-accent" data-delay="3">DJ ML ORIGINAL 1.0</span>
+      </h1>
+
+      <p class="hero-subtitle reveal-up" data-delay="4">
+        Sons, loops e material exclusivo para você produzir com identidade
+        própria e elevar o nível das suas faixas e sets. Escolha o plano
+        ideal para o seu momento: Básico, Intermediário ou Profissional.
+      </p>
+
+      <div class="hero-actions reveal-up" data-delay="5">
+        <a href="#oferta" class="btn btn-primary btn-magnetic" id="ctaPrimary">
+          <span class="btn-shine"></span>
+          <span class="btn-particles" aria-hidden="true"></span>
+          <span class="btn-label">VER OS PLANOS</span>
+        </a>
+        <a href="#conteudo" class="btn btn-secondary btn-magnetic">
+          <span class="btn-label">VER O QUE TEM NO PACK</span>
+        </a>
+      </div>
+
+      <div class="hero-eq reveal-up" data-delay="6" aria-hidden="true">
+        <div class="mini-eq" id="heroEq"></div>
+      </div>
+    </div>
+
+    <button class="scroll-indicator" id="scrollIndicator" aria-label="Rolar para baixo">
+      <span class="scroll-mouse"><span class="scroll-dot"></span></span>
+      <span class="scroll-text">ROLE PARA EXPLORAR</span>
+    </button>
+  </section>
+
+  <!-- ============ O QUE TEM NO PACK ============ -->
+  <section class="section" id="conteudo">
+    <div class="section-inner">
+      <p class="eyebrow reveal-up">// CONTEÚDO DO PACK</p>
+      <h2 class="section-title reveal-up">O QUE TEM NO <span class="text-red">PACK</span></h2>
+
+      <div class="cards-grid">
+
+        <article class="learn-card tilt-card reveal-up">
+          <div class="learn-card-glow"></div>
+          <div class="learn-card-icon">🎧</div>
+          <h3>SAMPLES DE DJ</h3>
+          <p>Sons e efeitos usados por DJs em transições e apresentações.</p>
+        </article>
+
+        <article class="learn-card tilt-card reveal-up">
+          <div class="learn-card-glow"></div>
+          <div class="learn-card-icon">🎹</div>
+          <h3>LOOPS DE PRODUÇÃO</h3>
+          <p>Bases prontas para você construir suas próprias músicas.</p>
+        </article>
+
+        <article class="learn-card tilt-card reveal-up">
+          <div class="learn-card-glow"></div>
+          <div class="learn-card-icon">🥁</div>
+          <h3>KICKS &amp; PERCUSSÃO</h3>
+          <p>Batidas para dar peso e groove às suas produções.</p>
+        </article>
+
+        <article class="learn-card tilt-card reveal-up">
+          <div class="learn-card-glow"></div>
+          <div class="learn-card-icon">🎚️</div>
+          <h3>ONE SHOTS</h3>
+          <p>Sons únicos para compor arranjos com mais personalidade.</p>
+        </article>
+
+        <article class="learn-card tilt-card reveal-up">
+          <div class="learn-card-glow"></div>
+          <div class="learn-card-icon">🔥</div>
+          <h3>FUNK</h3>
+          <p>Sons e batidas voltados para produção de funk.</p>
+        </article>
+
+        <article class="learn-card tilt-card reveal-up">
+          <div class="learn-card-glow"></div>
+          <div class="learn-card-icon">🚀</div>
+          <h3>IDENTIDADE SONORA</h3>
+          <p>Material pensado para você construir seu próprio estilo.</p>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ POR QUE DJ ML ORIGINAL 1.0 ============ -->
+  <section class="section section-alt" id="porque">
+    <div class="section-inner">
+      <p class="eyebrow reveal-up">// DIFERENCIAIS</p>
+      <h2 class="section-title reveal-up">POR QUE <span class="text-red">DJ ML ORIGINAL 1.0</span>?</h2>
+
+      <div class="why-grid">
+        <div class="why-list">
+          <div class="why-item reveal-up">
+            <span class="why-num">01</span>
+            <div>
+              <h4>Sons exclusivos</h4>
+              <p>Produzidos especialmente para compor o pack DJ ML ORIGINAL 1.0.</p>
+            </div>
+          </div>
+          <div class="why-item reveal-up">
+            <span class="why-num">02</span>
+            <div>
+              <h4>Prontos para uso</h4>
+              <p>Basta importar na sua DAW e começar a produzir.</p>
+            </div>
+          </div>
+          <div class="why-item reveal-up">
+            <span class="why-num">03</span>
+            <div>
+              <h4>Qualidade profissional</h4>
+              <p>Sons pensados com padrão de estúdio.</p>
+            </div>
+          </div>
+          <div class="why-item reveal-up">
+            <span class="why-num">04</span>
+            <div>
+              <h4>Vibe DJ e Funk</h4>
+              <p>Conteúdo com a cara de quem vive a cena eletrônica e o funk.</p>
+            </div>
+          </div>
+          <div class="why-item reveal-up">
+            <span class="why-num">05</span>
+            <div>
+              <h4>Organização</h4>
+              <p>[EDITAR: descreva aqui como os arquivos estão organizados/categorizados.]</p>
+            </div>
+          </div>
+          <div class="why-item reveal-up">
+            <span class="why-num">06</span>
+            <div>
+              <h4>Material exclusivo</h4>
+              <p>Conteúdo exclusivo do pack DJ ML ORIGINAL 1.0.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="why-visual reveal-up">
+          <div class="eq-panel">
+            <p class="eq-panel-label">MASTER OUT</p>
+            <div class="eq-panel-bars" id="whyEq"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ MID CTA ============ -->
+  <section class="mid-cta">
+    <h2 class="reveal-up">PARE DE APENAS OUVIR.<br><span class="text-red">COMECE A PRODUZIR.</span></h2>
+    <a href="#oferta" class="btn btn-primary btn-magnetic reveal-up">
+      <span class="btn-shine"></span>
+      <span class="btn-label">VER OS PLANOS</span>
+    </a>
+  </section>
+
+  <!-- ============ PACK ============ -->
+  <section class="section" id="pack">
+    <div class="section-inner curso-grid">
+      <div class="curso-text reveal-up">
+        <p class="eyebrow">// O PRODUTO</p>
+        <h2 class="section-title">PACK <span class="text-red">DJ ML ORIGINAL 1.0</span></h2>
+        <p class="curso-desc">
+          Um pack completo para DJs e produtores que querem elevar suas
+          produções e sets com sons e identidade próprios. Disponível em
+          três planos, para você escolher o nível de acesso ideal.
+        </p>
+
+        <ul class="curso-features">
+          <li><span class="feat-icon">🔓</span> ACESSO AO PACK</li>
+          <li><span class="feat-icon">🎛️</span> CONTEÚDO EXCLUSIVO</li>
+          <li><span class="feat-icon">🎚️</span> USE NA SUA DAW</li>
+        </ul>
+
+        <a href="#oferta" class="btn btn-primary btn-magnetic">
+          <span class="btn-shine"></span>
+          <span class="btn-label">VER OS PLANOS</span>
+        </a>
+      </div>
+
+      <div class="curso-visual reveal-up" id="cursoVisual">
+        <div class="product-box" id="productBox">
+          <div class="product-box-face product-box-front">
+            <span class="product-box-logo">DJ<br><em>ML</em><br>ORIGINAL<br>1.0</span>
+          </div>
+          <div class="product-box-face product-box-back"></div>
+          <div class="product-box-face product-box-right"></div>
+          <div class="product-box-face product-box-left"></div>
+          <div class="product-box-face product-box-top"></div>
+          <div class="product-box-face product-box-bottom"></div>
+        </div>
+        <div class="floating-chip chip-1">🎧</div>
+        <div class="floating-chip chip-2">🎚️</div>
+        <div class="floating-chip chip-3">🥁</div>
+        <div class="floating-chip chip-4">🎹</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ OFERTA / PLANOS (3 TIERS) ============ -->
+  <section class="section offer-section" id="oferta">
+    <div class="offer-glow" aria-hidden="true"></div>
+    <div class="section-inner offer-inner">
+      <p class="eyebrow reveal-up">// ESCOLHA SEU PLANO</p>
+      <h2 class="section-title reveal-up">O PLANO CERTO PARA <span class="text-red">O SEU NÍVEL</span></h2>
+      <p class="offer-sub reveal-up">
+        Do primeiro pack até o acesso completo com atualizações vitalícias:
+        escolha o plano que acompanha o seu ritmo de produção.
+      </p>
+
+      <div class="pricing-grid">
+
+        <!-- BÁSICO -->
+        <div class="price-card price-card-basico reveal-up">
+          <p class="price-tier-name">Básico</p>
+          <div class="price-value-row">
+            <span class="price-value"><span class="price-currency">R$</span><span id="priceBasico">47</span></span>
+          </div>
+          <p class="price-installment">ou 3x de R$16,90 no cartão</p>
+
+          <ul class="price-features">
+            <li><span class="price-check">✓</span> Samples de DJ essenciais</li>
+            <li><span class="price-check">✓</span> Kicks &amp; percussão</li>
+            <li><span class="price-check">✓</span> Acesso imediato após pagamento</li>
+            <li class="feat-off"><span class="price-x">✕</span> Loops de produção completos</li>
+            <li class="feat-off"><span class="price-x">✕</span> One shots exclusivos</li>
+            <li class="feat-off"><span class="price-x">✕</span> Pacote de Funk</li>
+            <li class="feat-off"><span class="price-x">✕</span> Atualizações vitalícias</li>
+            <li class="feat-off"><span class="price-x">✕</span> Suporte prioritário</li>
+          </ul>
+
+          <a href="#" class="btn btn-secondary btn-magnetic checkout-btn" data-tier="basico">
+            <span class="btn-label">QUERO O BÁSICO</span>
+          </a>
+        </div>
+
+        <!-- INTERMEDIÁRIO -->
+        <div class="price-card price-card-intermediario reveal-up">
+          <p class="price-tier-name">Intermediário</p>
+          <div class="price-value-row">
+            <span class="price-value"><span class="price-currency">R$</span><span id="priceIntermediario">97</span></span>
+          </div>
+          <p class="price-old">de R$147</p>
+          <p class="price-installment">ou 6x de R$16,90 no cartão</p>
+
+          <ul class="price-features">
+            <li><span class="price-check">✓</span> Tudo do plano Básico</li>
+            <li><span class="price-check">✓</span> Loops de produção completos</li>
+            <li><span class="price-check">✓</span> One shots exclusivos</li>
+            <li><span class="price-check">✓</span> Pacote de Funk</li>
+            <li><span class="price-check">✓</span> Acesso imediato após pagamento</li>
+            <li class="feat-off"><span class="price-x">✕</span> Atualizações vitalícias</li>
+            <li class="feat-off"><span class="price-x">✕</span> Suporte prioritário</li>
+          </ul>
+
+          <a href="#" class="btn btn-secondary btn-magnetic checkout-btn" data-tier="intermediario">
+            <span class="btn-label">QUERO O INTERMEDIÁRIO</span>
+          </a>
+        </div>
+
+        <!-- PROFISSIONAL (destaque) -->
+        <div class="price-card price-card-pro reveal-up">
+          <span class="price-badge">MAIS ESCOLHIDO</span>
+          <p class="price-tier-name">Profissional</p>
+          <div class="price-value-row">
+            <span class="price-value"><span class="price-currency">R$</span><span id="priceProfissional">197</span></span>
+          </div>
+          <p class="price-old">de R$397</p>
+          <p class="price-installment">ou 12x de R$18,90 no cartão</p>
+
+          <ul class="price-features">
+            <li><span class="price-check">✓</span> Tudo do plano Intermediário</li>
+            <li><span class="price-check">✓</span> Pack completo DJ ML ORIGINAL 1.0</li>
+            <li><span class="price-check">✓</span> Identidade sonora exclusiva</li>
+            <li><span class="price-check">✓</span> Atualizações vitalícias do pack</li>
+            <li><span class="price-check">✓</span> Suporte prioritário</li>
+            <li><span class="price-check">✓</span> Acesso imediato após pagamento</li>
+          </ul>
+
+          <a href="#" class="btn btn-primary btn-magnetic checkout-btn" data-tier="profissional">
+            <span class="btn-shine"></span>
+            <span class="btn-particles" aria-hidden="true"></span>
+            <span class="btn-label">QUERO O PROFISSIONAL</span>
+          </a>
+        </div>
+
+      </div>
+
+      <div class="trust-badges">
+        <span>🔒 Compra segura</span>
+        <span>⚡ Acesso após confirmação do pagamento</span>
+        <span>💻 Download disponível</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CTA FINAL ANTES DO FAQ ============ -->
+  <section class="mid-cta mid-cta-alt">
+    <h2 class="reveal-up">PRONTO PARA <span class="text-red">COMEÇAR</span>?</h2>
+    <p class="reveal-up">Seu próximo nível começa aqui.</p>
+  </section>
+
+  <!-- ============ FAQ ============ -->
+  <section class="section" id="faq">
+    <div class="section-inner faq-inner">
+      <p class="eyebrow reveal-up">// PERGUNTAS FREQUENTES</p>
+      <h2 class="section-title reveal-up">FAQ</h2>
+
+      <div class="accordion" id="accordion">
+        <div class="accordion-item reveal-up">
+          <button class="accordion-header">
+            <span>O que é o Pack DJ ML ORIGINAL 1.0?</span>
+            <span class="accordion-icon">+</span>
+          </button>
+          <div class="accordion-body">
+            <p>É um pack de produção com sons, loops e material exclusivo para DJs e produtores usarem em suas faixas e sets, disponível em três níveis de acesso.</p>
+          </div>
+        </div>
+
+        <div class="accordion-item reveal-up">
+          <button class="accordion-header">
+            <span>Qual a diferença entre os planos Básico, Intermediário e Profissional?</span>
+            <span class="accordion-icon">+</span>
+          </button>
+          <div class="accordion-body">
+            <p>O Básico traz o essencial para começar. O Intermediário adiciona loops completos, one shots e o pacote de Funk. O Profissional libera o pack completo, com atualizações vitalícias e suporte prioritário — é o plano com melhor custo-benefício.</p>
+          </div>
+        </div>
+
+        <div class="accordion-item reveal-up">
+          <button class="accordion-header">
+            <span>Posso fazer upgrade de plano depois?</span>
+            <span class="accordion-icon">+</span>
+          </button>
+          <div class="accordion-body">
+            <p>[EDITAR: informe aqui se é possível fazer upgrade e como funciona a cobrança da diferença.]</p>
+          </div>
+        </div>
+
+        <div class="accordion-item reveal-up">
+          <button class="accordion-header">
+            <span>Funciona em qualquer programa (DAW)?</span>
+            <span class="accordion-icon">+</span>
+          </button>
+          <div class="accordion-body">
+            <p>[EDITAR: informe aqui os formatos de arquivo e compatibilidade com DAWs.]</p>
+          </div>
+        </div>
+
+        <div class="accordion-item reveal-up">
+          <button class="accordion-header">
+            <span>Como recebo o pack?</span>
+            <span class="accordion-icon">+</span>
+          </button>
+          <div class="accordion-body">
+            <p>Após a confirmação do pagamento, você recebe o acesso ao conteúdo referente ao plano escolhido.</p>
+          </div>
+        </div>
+
+        <div class="accordion-item reveal-up">
+          <button class="accordion-header">
+            <span>Preciso ter experiência para usar?</span>
+            <span class="accordion-icon">+</span>
+          </button>
+          <div class="accordion-body">
+            <p>[EDITAR: informe se o pack é indicado para iniciantes, avançados, ou ambos.]</p>
+          </div>
+        </div>
+
+        <div class="accordion-item reveal-up">
+          <button class="accordion-header">
+            <span>Como faço o download?</span>
+            <span class="accordion-icon">+</span>
+          </button>
+          <div class="accordion-body">
+            <p>[EDITAR: descreva aqui o processo de download após a compra.]</p>
+          </div>
+        </div>
+
+        <div class="accordion-item reveal-up">
+          <button class="accordion-header">
+            <span>O que vem no pack?</span>
+            <span class="accordion-icon">+</span>
+          </button>
+          <div class="accordion-body">
+            <p>Samples, loops, kicks, one shots e sons voltados para DJ e funk. Veja a seção "O que tem no pack" acima e compare os planos para saber o que está incluso em cada um.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <p class="footer-logo">DJ<span>ML</span>ORIGINAL 1.0</p>
+      <p class="footer-tagline">Pack de Produção para DJs</p>
+    </div>
+
+    <nav class="footer-links">
+      <a href="#home">Início</a>
+      <a href="#pack">Pack</a>
+      <a href="#oferta">Planos</a>
+      <a href="#faq">FAQ</a>
+      <a href="#">Termos</a>
+      <a href="#">Privacidade</a>
+    </nav>
+  </div>
+  <p class="footer-copy">© 2026 DJ ML ORIGINAL. Todos os direitos reservados.</p>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+/* =========================================================
+   DJ ML ORIGINAL 1.0 — APP JS
+   Configurações editáveis + toda a lógica interativa do site.
+   ========================================================= */
+
+/* ============ 1. CONFIGURAÇÕES EDITÁVEIS ============ */
+/* Troque APENAS os valores abaixo quando precisar atualizar o site. */
+
+const PLANS = {
+  basico: {
+    price: "47",                 // <-- PREÇO do plano Básico (ex: "47")
+    checkoutUrl: "#"             // <-- LINK DE CHECKOUT do plano Básico
+  },
+  intermediario: {
+    price: "97",                 // <-- PREÇO do plano Intermediário
+    checkoutUrl: "#"             // <-- LINK DE CHECKOUT do plano Intermediário
+  },
+  profissional: {
+    price: "197",                // <-- PREÇO do plano Profissional
+    checkoutUrl: "#"             // <-- LINK DE CHECKOUT do plano Profissional
+  }
+};
+
+/* ====================================================== */
+
+document.addEventListener("DOMContentLoaded", () => {
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const isMobile = window.innerWidth < 768;
+
+  applyConfig();
+  initLoader();
+  initCursor();
+  initNavbar();
+  initScrollReveal();
+  buildEqualizers();
+  initAccordion();
+  initTiltCards();
+  initMagneticButtons();
+  if (typeof THREE !== "undefined") initBackgroundScene(reducedMotion, isMobile);
+});
+
+/* ============ 2. APLICA CONFIGURAÇÕES NA PÁGINA ============ */
+function applyConfig() {
+  const priceEls = {
+    basico: document.getElementById("priceBasico"),
+    intermediario: document.getElementById("priceIntermediario"),
+    profissional: document.getElementById("priceProfissional")
+  };
+
+  Object.keys(PLANS).forEach(tier => {
+    if (priceEls[tier]) priceEls[tier].textContent = PLANS[tier].price;
+  });
+
+  document.querySelectorAll(".checkout-btn").forEach(btn => {
+    const tier = btn.dataset.tier;
+    if (PLANS[tier]) btn.href = PLANS[tier].checkoutUrl;
+  });
+}
+
+/* ============ 3. LOADING SCREEN ============ */
+function initLoader() {
+  const loader = document.getElementById("loader");
+  const pctEl = document.getElementById("loaderPct");
+  let pct = 0;
+
+  const interval = setInterval(() => {
+    pct += Math.floor(Math.random() * 12) + 4;
+    if (pct >= 100) pct = 100;
+    pctEl.textContent = pct;
+    if (pct === 100) clearInterval(interval);
+  }, 90);
+
+  window.addEventListener("load", () => {
+    setTimeout(() => {
+      pctEl.textContent = "100";
+      loader.classList.add("loaded");
+    }, 500);
+  });
+
+  // fallback caso 'load' demore muito
+  setTimeout(() => loader.classList.add("loaded"), 3000);
+}
+
+/* ============ 4. CURSOR CUSTOMIZADO ============ */
+function initCursor() {
+  if (window.matchMedia("(hover:none)").matches) return;
+
+  const dot = document.getElementById("cursorDot");
+  const ring = document.getElementById("cursorRing");
+  let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
+  let ringX = mouseX, ringY = mouseY;
+
+  window.addEventListener("mousemove", (e) => {
+    mouseX = e.clientX; mouseY = e.clientY;
+    dot.style.transform = `translate(${mouseX}px, ${mouseY}px) translate(-50%,-50%)`;
+  });
+
+  function animateRing() {
+    ringX += (mouseX - ringX) * 0.18;
+    ringY += (mouseY - ringY) * 0.18;
+    ring.style.transform = `translate(${ringX}px, ${ringY}px) translate(-50%,-50%)`;
+    requestAnimationFrame(animateRing);
+  }
+  animateRing();
+
+  const hoverTargets = "a, button, .tilt-card, .accordion-header";
+  document.addEventListener("mouseover", (e) => {
+    if (e.target.closest(hoverTargets)) ring.classList.add("hovered");
+  });
+  document.addEventListener("mouseout", (e) => {
+    if (e.target.closest(hoverTargets)) ring.classList.remove("hovered");
+  });
+}
+
+/* ============ 5. NAVBAR (scroll state + mobile menu) ============ */
+function initNavbar() {
+  const navbar = document.getElementById("navbar");
+  const burger = document.getElementById("navBurger");
+  const links = document.getElementById("navLinks");
+
+  window.addEventListener("scroll", () => {
+    navbar.classList.toggle("scrolled", window.scrollY > 40);
+  }, { passive: true });
+
+  burger.addEventListener("click", () => {
+    const open = links.classList.toggle("open");
+    burger.classList.toggle("open", open);
+    burger.setAttribute("aria-expanded", open);
+  });
+
+  links.querySelectorAll("[data-close]").forEach(link => {
+    link.addEventListener("click", () => {
+      links.classList.remove("open");
+      burger.classList.remove("open");
+      burger.setAttribute("aria-expanded", "false");
+    });
+  });
+}
+
+/* ============ 6. SCROLL REVEAL (Intersection Observer) ============ */
+function initScrollReveal() {
+  const items = document.querySelectorAll(".reveal-up");
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const delay = entry.target.dataset.delay ? entry.target.dataset.delay * 90 : 0;
+        setTimeout(() => entry.target.classList.add("in-view"), delay);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15, rootMargin: "0px 0px -60px 0px" });
+
+  items.forEach(item => observer.observe(item));
+}
+
+/* ============ 7. EQUALIZADORES (barras animadas em CSS) ============ */
+function buildEqualizers() {
+  buildBars(document.getElementById("sideEq"), 10, 6, 24);
+  buildBars(document.getElementById("heroEq"), 24, 6, 34);
+  buildBars(document.getElementById("whyEq"), 28, 10, 170);
+}
+
+function buildBars(container, count, minH, maxH) {
+  if (!container) return;
+  for (let i = 0; i < count; i++) {
+    const bar = document.createElement("span");
+    const duration = (Math.random() * 0.8 + 0.6).toFixed(2);
+    const delay = (Math.random() * 1).toFixed(2);
+    const peak = Math.floor(Math.random() * (maxH - minH)) + minH;
+    bar.style.animation = `barPulse ${duration}s ease-in-out ${delay}s infinite`;
+    bar.style.setProperty("--peak", peak + "px");
+    bar.style.height = minH + "px";
+    container.appendChild(bar);
+  }
+
+  const styleId = "bar-pulse-keyframes";
+  if (!document.getElementById(styleId)) {
+    const style = document.createElement("style");
+    style.id = styleId;
+    style.textContent = `
+      @keyframes barPulse {
+        0%, 100% { height: var(--min-h, 6px); opacity:.55; }
+        50% { height: var(--peak, 30px); opacity:1; }
+      }
+    `;
+    document.head.appendChild(style);
+  }
+}
+
+/* ============ 8. FAQ ACCORDION ============ */
+function initAccordion() {
+  document.querySelectorAll(".accordion-item").forEach(item => {
+    const header = item.querySelector(".accordion-header");
+    header.addEventListener("click", () => {
+      const isOpen = item.classList.contains("open");
+      item.closest(".accordion").querySelectorAll(".accordion-item").forEach(i => i.classList.remove("open"));
+      if (!isOpen) item.classList.add("open");
+    });
+  });
+}
+
+/* ============ 9. TILT 3D NOS CARDS ============ */
+function initTiltCards() {
+  if (window.matchMedia("(hover:none)").matches) return;
+  const cards = document.querySelectorAll(".tilt-card");
+
+  cards.forEach(card => {
+    card.addEventListener("mousemove", (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width - 0.5;
+      const y = (e.clientY - rect.top) / rect.height - 0.5;
+      card.style.transform = `perspective(700px) rotateY(${x * 10}deg) rotateX(${-y * 10}deg) translateY(-4px)`;
+      const glow = card.querySelector(".learn-card-glow");
+      if (glow) glow.style.transform = `translate(${x * 30}px, ${y * 30}px)`;
+    });
+    card.addEventListener("mouseleave", () => {
+      card.style.transform = "perspective(700px) rotateY(0deg) rotateX(0deg) translateY(0)";
+    });
+  });
+}
+
+/* ============ 10. BOTÕES MAGNÉTICOS ============ */
+function initMagneticButtons() {
+  if (window.matchMedia("(hover:none)").matches) return;
+  document.querySelectorAll(".btn-magnetic").forEach(btn => {
+    btn.addEventListener("mousemove", (e) => {
+      const rect = btn.getBoundingClientRect();
+      const x = e.clientX - rect.left - rect.width / 2;
+      const y = e.clientY - rect.top - rect.height / 2;
+      btn.style.transform = `translate(${x * 0.18}px, ${y * 0.3}px)`;
+    });
+    btn.addEventListener("mouseleave", () => {
+      btn.style.transform = "translate(0,0)";
+    });
+  });
+}
+
+/* ============ 11. CENA 3D DE FUNDO (Three.js) ============ */
+function initBackgroundScene(reducedMotion, isMobile) {
+  const canvas = document.getElementById("bgCanvas");
+  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobile ? 1.3 : 2));
+  renderer.setSize(window.innerWidth, window.innerHeight);
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 100);
+  camera.position.set(0, 0, 9);
+
+  // Luzes
+  scene.add(new THREE.AmbientLight(0x331111, 1.2));
+  const redLight = new THREE.PointLight(0xff0000, 3.2, 40);
+  redLight.position.set(-4, 2, 4);
+  scene.add(redLight);
+  const whiteLight = new THREE.PointLight(0xffffff, 1.1, 40);
+  whiteLight.position.set(5, 3, 6);
+  scene.add(whiteLight);
+
+  const rig = new THREE.Group();
+  scene.add(rig);
+
+  /* --- Vinil (disco) --- */
+  const vinylGroup = new THREE.Group();
+  const vinylGeo = new THREE.CylinderGeometry(2.1, 2.1, 0.08, 64);
+  const vinylMat = new THREE.MeshStandardMaterial({ color: 0x0a0a0a, metalness: 0.6, roughness: 0.35 });
+  const vinyl = new THREE.Mesh(vinylGeo, vinylMat);
+  vinyl.rotation.x = Math.PI / 2;
+  vinylGroup.add(vinyl);
+
+  const labelGeo = new THREE.CylinderGeometry(0.55, 0.55, 0.09, 32);
+  const labelMat = new THREE.MeshStandardMaterial({ color: 0xff0000, emissive: 0x990000, emissiveIntensity: 0.6, metalness: 0.3, roughness: 0.4 });
+  const label = new THREE.Mesh(labelGeo, labelMat);
+  label.rotation.x = Math.PI / 2;
+  vinylGroup.add(label);
+
+  // Sulcos (aneis finos wireframe pra reforçar look de vinil)
+  for (let i = 0; i < 5; i++) {
+    const r = 1.1 + i * 0.2;
+    const ringGeo = new THREE.TorusGeometry(r, 0.005, 6, 64);
+    const ringMat = new THREE.MeshBasicMaterial({ color: 0xff2222, transparent: true, opacity: 0.25 });
+    const ring = new THREE.Mesh(ringGeo, ringMat);
+    vinylGroup.add(ring);
+  }
+
+  vinylGroup.position.set(2.4, 0.4, -2);
+  rig.add(vinylGroup);
+
+  /* --- Braço / agulha (tonearm) --- */
+  const tonearmGroup = new THREE.Group();
+  const armGeo = new THREE.BoxGeometry(1.6, 0.08, 0.08);
+  const armMat = new THREE.MeshStandardMaterial({ color: 0xe5e5e5, metalness: 0.8, roughness: 0.25 });
+  const arm = new THREE.Mesh(armGeo, armMat);
+  arm.position.set(0.8, 0, 0);
+  tonearmGroup.add(arm);
+  tonearmGroup.position.set(vinylGroup.position.x + 2.1, vinylGroup.position.y + 0.4, vinylGroup.position.z);
+  tonearmGroup.rotation.z = -0.5; // posição "levantada"
+  rig.add(tonearmGroup);
+
+  /* --- Fones de ouvido (simplificado) --- */
+  const headphoneGroup = new THREE.Group();
+  const cupGeo = new THREE.TorusGeometry(0.42, 0.16, 16, 32);
+  const cupMat = new THREE.MeshStandardMaterial({ color: 0x111111, metalness: 0.5, roughness: 0.4, emissive: 0x220000, emissiveIntensity: 0.3 });
+  const cupL = new THREE.Mesh(cupGeo, cupMat);
+  cupL.position.set(-0.9, 0, 0);
+  const cupR = cupL.clone();
+  cupR.position.set(0.9, 0, 0);
+  const bandGeo = new THREE.TorusGeometry(0.9, 0.05, 8, 32, Math.PI);
+  const bandMat = new THREE.MeshStandardMaterial({ color: 0x1a1a1a, metalness: 0.6, roughness: 0.3 });
+  const band = new THREE.Mesh(bandGeo, bandMat);
+  band.rotation.z = Math.PI;
+  band.position.y = 0.05;
+  headphoneGroup.add(cupL, cupR, band);
+  headphoneGroup.position.set(-3, 1.2, -1);
+  headphoneGroup.rotation.set(0.3, 0.4, 0.1);
+  rig.add(headphoneGroup);
+
+  /* --- Cubos metálicos flutuantes --- */
+  const cubes = [];
+  const cubeCount = isMobile ? 2 : 4;
+  for (let i = 0; i < cubeCount; i++) {
+    const size = 0.22 + Math.random() * 0.18;
+    const geo = new THREE.BoxGeometry(size, size, size);
+    const mat = new THREE.MeshStandardMaterial({ color: 0x222222, metalness: 0.85, roughness: 0.2, emissive: 0x330000, emissiveIntensity: 0.4 });
+    const cube = new THREE.Mesh(geo, mat);
+    cube.position.set((Math.random() - 0.5) * 8, (Math.random() - 0.5) * 5, (Math.random() - 0.5) * 4 - 1);
+    cube.userData.speed = 0.2 + Math.random() * 0.3;
+    rig.add(cube);
+    cubes.push(cube);
+  }
+
+  /* --- Esferas vermelhas flutuantes --- */
+  const spheres = [];
+  const sphereCount = isMobile ? 2 : 5;
+  for (let i = 0; i < sphereCount; i++) {
+    const r = 0.06 + Math.random() * 0.08;
+    const geo = new THREE.SphereGeometry(r, 16, 16);
+    const mat = new THREE.MeshStandardMaterial({ color: 0xff0000, emissive: 0xff0000, emissiveIntensity: 0.9, roughness: 0.3 });
+    const sphere = new THREE.Mesh(geo, mat);
+    sphere.position.set((Math.random() - 0.5) * 9, (Math.random() - 0.5) * 6, (Math.random() - 0.5) * 5 - 2);
+    sphere.userData.speed = 0.3 + Math.random() * 0.4;
+    rig.add(sphere);
+    spheres.push(sphere);
+  }
+
+  /* --- Partículas --- */
+  const particleCount = isMobile ? 120 : 400;
+  const particleGeo = new THREE.BufferGeometry();
+  const positions = new Float32Array(particleCount * 3);
+  for (let i = 0; i < particleCount; i++) {
+    positions[i * 3] = (Math.random() - 0.5) * 20;
+    positions[i * 3 + 1] = (Math.random() - 0.5) * 14;
+    positions[i * 3 + 2] = (Math.random() - 0.5) * 10 - 2;
+  }
+  particleGeo.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+  const particleMat = new THREE.PointsMaterial({ color: 0xff2222, size: 0.025, transparent: true, opacity: 0.55 });
+  const particles = new THREE.Points(particleGeo, particleMat);
+  rig.add(particles);
+
+  /* --- Interação: mouse parallax --- */
+  let targetRotX = 0, targetRotY = 0;
+  window.addEventListener("mousemove", (e) => {
+    targetRotY = (e.clientX / window.innerWidth - 0.5) * 0.5;
+    targetRotX = (e.clientY / window.innerHeight - 0.5) * 0.3;
+  });
+
+  /* --- Interação: scroll parallax --- */
+  let scrollProgress = 0;
+  window.addEventListener("scroll", () => {
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    scrollProgress = max > 0 ? window.scrollY / max : 0;
+  }, { passive: true });
+
+  /* --- Resize --- */
+  window.addEventListener("resize", () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  });
+
+  /* --- Pausa quando fora da viewport (performance) --- */
+  let isVisible = true;
+  const io = new IntersectionObserver((entries) => {
+    isVisible = entries[0].isIntersecting;
+  });
+  io.observe(canvas);
+  document.addEventListener("visibilitychange", () => {
+    isVisible = isVisible && !document.hidden;
+  });
+
+  const clock = new THREE.Clock();
+
+  function animate() {
+    requestAnimationFrame(animate);
+    if (!isVisible) return;
+    const t = clock.getElapsedTime();
+
+    if (!reducedMotion) {
+      vinylGroup.rotation.y += 0.012;
+      tonearmGroup.rotation.z = -0.5 + Math.min(scrollProgress * 3, 1) * 0.35;
+      headphoneGroup.rotation.y = 0.4 + Math.sin(t * 0.5) * 0.15;
+      headphoneGroup.position.y = 1.2 + Math.sin(t * 0.8) * 0.15;
+
+      cubes.forEach((c, i) => {
+        c.rotation.x += 0.005 * c.userData.speed;
+        c.rotation.y += 0.007 * c.userData.speed;
+        c.position.y += Math.sin(t * c.userData.speed + i) * 0.0015;
+      });
+      spheres.forEach((s, i) => {
+        s.position.y += Math.sin(t * s.userData.speed + i) * 0.002;
+        s.position.x += Math.cos(t * s.userData.speed * 0.6 + i) * 0.0015;
+      });
+      particles.rotation.y += 0.0006;
+    }
+
+    // Parallax de câmera / rig com mouse (suave, sempre ativo mesmo com reduced motion, mas sutil)
+    rig.rotation.y += (targetRotY - rig.rotation.y) * 0.04;
+    rig.rotation.x += (-targetRotX - rig.rotation.x) * 0.04;
+
+    // Parallax de scroll: move o rig verticalmente e aproxima levemente
+    rig.position.y = scrollProgress * 2.2;
+    camera.position.z = 9 - scrollProgress * 1.5;
+
+    renderer.render(scene, camera);
+  }
+  animate();
+}
+</script>
+</body>
+</html>
